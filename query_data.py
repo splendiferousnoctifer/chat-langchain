@@ -6,6 +6,8 @@ from langchain.chains.chat_vector_db.prompts import (CONDENSE_QUESTION_PROMPT,
                                                      QA_PROMPT)
 from langchain.chains.llm import LLMChain
 from langchain.chains.question_answering import load_qa_chain
+from langchain.chains.qa_with_sources import load_qa_with_sources_chain
+
 from langchain.llms import OpenAI
 from langchain.vectorstores.base import VectorStore
 
@@ -41,14 +43,19 @@ def get_chain(
     question_generator = LLMChain(
         llm=question_gen_llm, prompt=CONDENSE_QUESTION_PROMPT, callback_manager=manager
     )
-    doc_chain = load_qa_chain(
-        streaming_llm, chain_type="stuff", prompt=QA_PROMPT, callback_manager=manager
-    )
+
+    #doc_chain = load_qa_chain(
+    #    streaming_llm, chain_type="stuff", prompt=QA_PROMPT, callback_manager=manager
+    #)
+
+    doc_chain = load_qa_with_sources_chain(streaming_llm, chain_type="stuff")
 
     qa = ChatVectorDBChain(
         vectorstore=vectorstore,
         combine_docs_chain=doc_chain,
         question_generator=question_generator,
         callback_manager=manager,
+        #return_source_documents=True,
+
     )
     return qa
