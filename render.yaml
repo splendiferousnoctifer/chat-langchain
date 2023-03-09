@@ -1,7 +1,7 @@
 services:
   - type: web
     name: chat_stoeckl
-    env: python
+    env: docker
     envVars:
       - key: OPENAI_API_KEY
         sync: false
