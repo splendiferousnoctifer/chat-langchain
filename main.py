@@ -16,6 +16,9 @@ app = FastAPI()
 templates = Jinja2Templates(directory="templates")
 vectorstore: Optional[VectorStore] = None
 
+import os
+os.environ.get('OPENAI_API_KEY')
+
 
 @app.on_event("startup")
 async def startup_event():

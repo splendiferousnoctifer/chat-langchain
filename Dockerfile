@@ -7,7 +7,7 @@ RUN pip install \
     isort \
     websockets==10.4 \
     pydantic \
-    langchain==0.0.100 \
+    langchain==0.0.105 \
     uvicorn==0.20.0 \
     jinja2 \
     faiss-cpu==1.7.3 \
