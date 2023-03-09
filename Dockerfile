@@ -1,4 +1,4 @@
-FROM python:3.9
+FROM python:3.10.7
 
 # For better caching we list the packages
 RUN pip install \
