@@ -1,4 +1,4 @@
-openai
+openai==0.0.105
 fastapi
 black
 isort
@@ -11,4 +11,5 @@ faiss-cpu
 bs4
 unstructured
 libmagic
+pinecone-client
 pip

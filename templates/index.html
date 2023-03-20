@@ -3,7 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Chat Your Data</title>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', path='/favicon.png') }}">
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <meta property="og:description" content="A chat-GPT powered bot indexed on the stoeckl.ai docs that answers questions.">
+    <meta property="og:site-name" content="Stoeckl.ai Help Bot">
+    <script type="text/javascript" src="https://unpkg.com/showdown/dist/showdown.min.js"></script>
+
     <style>
         a {
             text-decoration: underline;
@@ -53,10 +58,12 @@
           margin-top: 10px;
         }
     </style>
+    
     <script>
-        //var endpoint = "ws://localhost:9000/chat";
-        var endpoint = "wss://chat-langchain-stoeckl.onrender.com/chat";
+        var endpoint = "ws://localhost:9001/chat";
+        //var endpoint = "wss://chat-langchain-stoeckl.onrender.com/chat";
         var ws = new WebSocket(endpoint);
+        var converter = new showdown.Converter();	
 
 
         function isURL(str) {
@@ -96,19 +103,25 @@
 
 
                     if (data.message === "\n") {
-                        p.innerHTML += "<br><br>";
+                        p.innerHTML += "<br>";
                     } else {
                         p.innerHTML += data.message;
                     }
                 } else if (data.type === "info") {
                     var header = document.getElementById('header');
                     header.innerHTML = data.message;
+
                 } else if (data.type === "end") {
+                    var p = messages.lastChild.lastChild;
+                    p.innerHTML = converter.makeHtml(p.innerHTML)
+
+
                     var header = document.getElementById('header');
                     header.innerHTML = "Ask a question about <a href=\"https://www.stoekl.ai\">stoeckl.ai</a>.";
                     var button = document.getElementById('send');
                     button.innerHTML = "Send";
                     button.disabled = false;
+
                 } else if (data.type === "error") {
                     var header = document.getElementById('header');
                     header.innerHTML = "Ask a question about <a href=\"https://www.stoekl.ai\">stoeckl.ai</a>.";
@@ -130,13 +143,14 @@
             // Scroll to the bottom of the chat
             messages.scrollTop = messages.scrollHeight;
 
+            /*
+
             var serverMessages = document.querySelectorAll(".server-message");
             if (serverMessages) {
                 for (var i = 0; i < serverMessages.length; i++) {
                     var p = serverMessages[i].querySelector("p");
                     if (p) {     
                         // Log the existing text content
-                        console.log("Original text: " + p.textContent);
                 
                         // Replace URLs with links
                         var urlPattern = new RegExp("(www\\.[^\\s]+)", "gi");
@@ -151,10 +165,10 @@
                         p.innerHTML = p.innerHTML.replace('index.html', '');
 
                         // Log the modified text content
-                        console.log("Modified text: " + p.textContent);
                     }
                 }
             }
+            */
         };
         // Send message to server
         function sendMessage(event) {
