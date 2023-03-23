@@ -1,6 +1,6 @@
 .PHONY: start
 start:
-	uvicorn main:app --port 9001 --forwarded-allow-ips=*
+	uvicorn main:app --port 9000 --forwarded-allow-ips=*
 
 .PHONY: format
 format:

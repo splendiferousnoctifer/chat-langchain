@@ -92,7 +92,8 @@ def get_chain(
     #    streaming_llm, chain_type="stuff", prompt=QA_PROMPT, callback_manager=manager
     #)
 
-    doc_chain = load_qa_chain(streaming_llm, chain_type="stuff", prompt=QA_PROMPT, callback_manager=manager)
+    doc_chain = load_qa_with_sources_chain(streaming_llm, chain_type="stuff")#, prompt=QA_PROMPT, callback_manager=manager)
+    
 
     qa = ChatVectorDBChain(
         vectorstore=vectorstore,
